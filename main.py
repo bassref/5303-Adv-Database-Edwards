@@ -1,6 +1,6 @@
 import json
 from typing import Optional
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from pydantic import BaseModel
 from mysqlCnx import MysqlCnx
 
@@ -127,16 +127,13 @@ class WorldItem(BaseModel):
 
 app = FastAPI()
 
-
-
-
 @app.get("/")
 async def root():
     return {"message":"Hello World"}
 
 #route for reading a table from basics
 @app.get("/basics/{item_id}")
-async def read_item(item_id:int):
+async def read_item_basics(item_id:int):
     ques = basics[item_id]['question']
     quer = basics[item_id]['sql']
     res = cnx.query(basics[item_id]['sql'])
@@ -151,7 +148,7 @@ async def read_item(item_id:int):
 
 #route for reading World Tutorial
 @app.get("/world/{item_id}")
-async def read_item(item_id:int):
+async def read_item_world(item_id:int):
     ques = world[item_id]['question']
     res = cnx.query(world[item_id]['sql'])
     quer = world[item_id]['sql']    
@@ -165,7 +162,7 @@ async def read_item(item_id:int):
 
 #route for Nobel Tutorial
 @app.get("/nobel/{item_id}")
-async def read_item(item_id:int):
+async def read_item_nobel(item_id:int):
     ques = nobel[item_id]['question']
     res = cnx.query(nobel[item_id]['sql'])
     quer = nobel[item_id]['sql']    
@@ -179,7 +176,7 @@ async def read_item(item_id:int):
 
 #route for Select Within Tutorial
 @app.get("/selectOper/{item_id}")
-async def read_item(item_id:int):
+async def read_item_select_Oper(item_id:int):
     ques = selectOper[item_id]['question']
     res = cnx.query(selectOper[item_id]['sql'])
     quer = selectOper[item_id]['sql']    
@@ -193,7 +190,7 @@ async def read_item(item_id:int):
 
 #route for Sum and Count Tutorial
 @app.get("/sumAndCount/{item_id}")
-async def read_item(item_id:int):
+async def read_item_Sum_And_Count(item_id:int):
     ques = sumAndCount[item_id]['question']
     res = cnx.query(sumAndCount[item_id]['sql'])
     quer = sumAndCount[item_id]['sql']    
@@ -208,7 +205,7 @@ async def read_item(item_id:int):
 
 #route for Join Tutorial
 @app.get("/joinOper/{item_id}")
-async def read_item(item_id:int):
+async def read_item_join_Oper(item_id:int):
     ques = joinOper[item_id]['question']
     res = cnx.query(joinOper[item_id]['sql'])
     quer = joinOper[item_id]['sql']    
@@ -221,33 +218,124 @@ async def read_item(item_id:int):
     return(response)
 
 #route return all the routes
-@app.get("/all")
-async def get_all_routes():
-    routeList = []
+@app.get("/all/")
+async def read_item_all(request:Request):
     response = {
-        "Get Basics ": {"/basics/" : basics}
-    }
-    return(response)
+        "BASICS": "-----------------------------------",
+        basics[1]['question']: request.url_for("read_item_basics", **{"item_id":1}),
+        basics[2]['question']:  request.url_for("read_item_basics", **{"item_id":2}),
+        basics[3]['question']:  request.url_for("read_item_basics", **{"item_id":3}),
+        "WORLD": "-----------------------------------",
+        world[1]['question']:  request.url_for("read_item_world", **{"item_id":1}),
+        world[2]['question']:  request.url_for("read_item_world", **{"item_id":2}),
+        world[3]['question']:  request.url_for("read_item_world", **{"item_id":3}),
+        world[4]['question']:  request.url_for("read_item_world", **{"item_id":4}),
+        world[5]['question']:  request.url_for("read_item_world", **{"item_id":5}),
+        world[6]['question']:  request.url_for("read_item_world", **{"item_id":6}),
+        world[7]['question']:  request.url_for("read_item_world", **{"item_id":7}),
+        world[8]['question']:  request.url_for("read_item_world", **{"item_id":8}),
+        world[9]['question']:  request.url_for("read_item_world", **{"item_id":9}),
+        world[10]['question']:  request.url_for("read_item_world", **{"item_id":10}),
+        world[11]['question']:  request.url_for("read_item_world", **{"item_id":11}),
+        world[12]['question']:  request.url_for("read_item_world", **{"item_id":12}),
+        world[13]['question']:  request.url_for("read_item_world", **{"item_id":13}),
+        "NOBEL": "-----------------------------------",
+        nobel[1]['question']:  request.url_for("read_item_nobel", **{"item_id":1}),
+        nobel[2]['question']:  request.url_for("read_item_nobel", **{"item_id":2}),
+        nobel[3]['question']:  request.url_for("read_item_nobel", **{"item_id":3}),
+        nobel[4]['question']:  request.url_for("read_item_nobel", **{"item_id":4}),
+        nobel[5]['question']:  request.url_for("read_item_nobel", **{"item_id":5}),
+        nobel[6]['question']:  request.url_for("read_item_nobel", **{"item_id":6}),
+        nobel[7]['question']:  request.url_for("read_item_nobel", **{"item_id":7}),
+        nobel[8]['question']:  request.url_for("read_item_nobel", **{"item_id":8}),
+        nobel[9]['question']:  request.url_for("read_item_nobel", **{"item_id":9}),
+        nobel[10]['question']:  request.url_for("read_item_nobel", **{"item_id":10}),
+        nobel[11]['question']:  request.url_for("read_item_nobel", **{"item_id":11}),
+        nobel[12]['question']:  request.url_for("read_item_nobel", **{"item_id":12}),
+        nobel[13]['question']:  request.url_for("read_item_nobel", **{"item_id":13}),
+        nobel[14]['question']:  request.url_for("read_item_nobel", **{"item_id":14}),
+        "SELECT OPERATION": "-----------------------------------",
+        selectOper[1]['question']:  request.url_for("read_item_select_Oper", **{"item_id":1}),
+        selectOper[2]['question']:  request.url_for("read_item_select_Oper", **{"item_id":2}),
+        selectOper[3]['question']:  request.url_for("read_item_select_Oper", **{"item_id":3}),
+        selectOper[4]['question']:  request.url_for("read_item_select_Oper", **{"item_id":4}),
+        selectOper[5]['question']:  request.url_for("read_item_select_Oper", **{"item_id":5}),
+        selectOper[6]['question']:  request.url_for("read_item_select_Oper", **{"item_id":6}),
+        selectOper[7]['question']:  request.url_for("read_item_select_Oper", **{"item_id":7}),
+        selectOper[8]['question']:  request.url_for("read_item_select_Oper", **{"item_id":8}),
+        selectOper[9]['question']:  request.url_for("read_item_select_Oper", **{"item_id":9}),
+        selectOper[10]['question']:  request.url_for("read_item_select_Oper", **{"item_id":10}),
+        "SUM AND COUNT": "-----------------------------------",
+        sumAndCount[1]['question']:  request.url_for("read_item_Sum_And_Count", **{"item_id":1}),
+        sumAndCount[2]['question']:  request.url_for("read_item_Sum_And_Count", **{"item_id":2}),
+        sumAndCount[3]['question']:  request.url_for("read_item_Sum_And_Count", **{"item_id":3}),
+        sumAndCount[4]['question']:  request.url_for("read_item_Sum_And_Count", **{"item_id":4}),
+        sumAndCount[5]['question']:  request.url_for("read_item_Sum_And_Count", **{"item_id":5}),
+        sumAndCount[6]['question']:  request.url_for("read_item_Sum_And_Count", **{"item_id":6}),
+        sumAndCount[7]['question']:  request.url_for("read_item_Sum_And_Count", **{"item_id":7}),
+        sumAndCount[8]['question']:  request.url_for("read_item_Sum_And_Count", **{"item_id":8}),
+        "JOIN OPERATION": "-----------------------------------",
+        joinOper[1]['question']:  request.url_for("read_item_join_Oper", **{"item_id":1}),
+        joinOper[2]['question']:  request.url_for("read_item_join_Oper", **{"item_id":2}),
+        joinOper[3]['question']:  request.url_for("read_item_join_Oper", **{"item_id":3}),
+        joinOper[4]['question']:  request.url_for("read_item_join_Oper", **{"item_id":4}),
+        joinOper[5]['question']:  request.url_for("read_item_join_Oper", **{"item_id":5}),
+        joinOper[6]['question']:  request.url_for("read_item_join_Oper", **{"item_id":6}),
+        joinOper[7]['question']:  request.url_for("read_item_join_Oper", **{"item_id":7}),
+        joinOper[8]['question']:  request.url_for("read_item_join_Oper", **{"item_id":8}),
+        joinOper[9]['question']:  request.url_for("read_item_join_Oper", **{"item_id":9}),
+        joinOper[10]['question']:  request.url_for("read_item_join_Oper", **{"item_id":10}),
+        joinOper[11]['question']:  request.url_for("read_item_join_Oper", **{"item_id":11}),
+        joinOper[12]['question']:  request.url_for("read_item_join_Oper", **{"item_id":12}),
+        joinOper[13]['question']:  request.url_for("read_item_join_Oper", **{"item_id":13})}
+
+    return (response)
 
 
 #put route for world
 @app.put("/world/{world_item}")
 async def create_item(worldItem: WorldItem):
+    sql = "UPDATE `world` SET WHERE"
     
+    if worldItem.name != None:
+        sql += f"`name`=`{worldItem.name}`, "
+    
+    if worldItem.continent !=None: 
+        sql += f"`continent`=`{worldItem.continent}`, "
+    
+    if worldItem.area !=None: 
+        sql += f"`area`=`{worldItem.area}`, "
+    
+    if worldItem.population !=None: 
+        sql += f"`population`=`{worldItem.population}`, "
+
+    if worldItem.gdp != None: 
+        sql += f"`gdp`= `{worldItem.gdp}`, "
+    
+    if worldItem.capital != None: 
+        sql += f"`capital`=`{worldItem.capital}`, "
+    
+    if worldItem.tld != None: 
+        sql += f"`tld`=`{worldItem.tld}`, "
+
+    if worldItem.flag != None: 
+        sql += f"`flag`=`{worldItem.flag}`, "
+
+    sql += f"WHERE `id`=`{worldItem.id}`"
+    print(sql)
+    res = cnx.query(sql)
     return worldItem
+
 
 
 #post data to teachers table
 @app.post("/teachItem/")
 async def create_item(teachItem: TeachItem):
-    teachItem_dict = teachItem.dict()
-    teachItem_dict.update(
-        {
-            "dept": dept,
-            "name": name,
-            "phone": phone,
-            "mobile" : mobile
-        }
-    )
-    return teachItem
+    sql = f"""
+    INSERT INTO 'teacher' (`id`,`dept`, `phone`,`mobile`)
+    VALUES ('{teachItem.id}','{teachItem.dept}','{teachItem.phone}','{teachItem.mobile}')
+     """       
+    res = cnx.query(sql)
+    return res
+
 
